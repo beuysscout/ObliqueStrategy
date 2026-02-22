@@ -82,7 +82,7 @@
 	.title {
 		font-family: var(--font-sans);
 		font-size: 1.1rem;
-		font-weight: 400;
+		font-weight: 900;
 		letter-spacing: 0.25em;
 		text-transform: uppercase;
 		color: var(--color-text-light);
@@ -91,6 +91,7 @@
 	.subtitle {
 		font-size: 0.8rem;
 		font-style: italic;
+		font-weight: 900;
 		color: var(--color-text-light);
 		opacity: 0.5;
 		margin-top: 6px;
