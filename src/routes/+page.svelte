@@ -1,34 +1,27 @@
 <script lang="ts">
 	import Card from '$lib/components/Card.svelte';
+	import Dock from '$lib/components/Dock.svelte';
 	import Particles from '$lib/components/Particles.svelte';
 	import { drawRandomStrategy } from '$lib/strategies';
 
-	type CardState = 'idle' | 'drawing' | 'revealed' | 'exiting';
+	type CardState = 'idle' | 'revealed' | 'exiting';
 
 	let cardState: CardState = $state('idle');
 	let currentStrategy = $state('');
 	let drawCount = $state(0);
 
 	function handleDraw() {
-		if (cardState === 'drawing') return;
-
 		if (cardState === 'revealed') {
 			cardState = 'exiting';
 			setTimeout(() => {
 				currentStrategy = drawRandomStrategy(currentStrategy);
 				drawCount++;
-				cardState = 'drawing';
-				setTimeout(() => {
-					cardState = 'revealed';
-				}, 800);
-			}, 450);
+				cardState = 'revealed';
+			}, 300);
 		} else {
 			currentStrategy = drawRandomStrategy();
 			drawCount++;
-			cardState = 'drawing';
-			setTimeout(() => {
-				cardState = 'revealed';
-			}, 800);
+			cardState = 'revealed';
 		}
 	}
 
@@ -51,17 +44,17 @@
 	</header>
 
 	<section class="stage">
-		<Card strategy={currentStrategy} state={cardState} onDraw={handleDraw} />
+		<Card strategy={currentStrategy} state={cardState} />
 	</section>
 
 	<footer class="footer" class:faded={cardState === 'revealed'}>
 		{#if drawCount > 0}
-			<p class="counter">{drawCount} {drawCount === 1 ? 'card' : 'cards'} drawn</p>
-		{:else}
-			<p class="counter">Press space or click to draw</p>
+			<p class="counter">{drawCount} {drawCount === 1 ? 'draw' : 'draws'}</p>
 		{/if}
 	</footer>
 </main>
+
+<Dock onDraw={handleDraw} />
 
 <style>
 	.app {
@@ -87,7 +80,7 @@
 	}
 
 	.title {
-		font-family: var(--font-serif);
+		font-family: var(--font-sans);
 		font-size: 1.1rem;
 		font-weight: 400;
 		letter-spacing: 0.25em;
@@ -114,6 +107,7 @@
 	.footer {
 		text-align: center;
 		transition: opacity 0.8s var(--ease-out-expo);
+		padding-bottom: 80px;
 	}
 
 	.footer.faded {
