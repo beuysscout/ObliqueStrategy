@@ -2,6 +2,7 @@
 	import Card from '$lib/components/Card.svelte';
 	import Dock from '$lib/components/Dock.svelte';
 	import Particles from '$lib/components/Particles.svelte';
+	import AboutDrawer from '$lib/components/AboutDrawer.svelte';
 	import { drawRandomStrategy } from '$lib/strategies';
 
 	type CardState = 'idle' | 'revealed' | 'exiting';
@@ -9,6 +10,7 @@
 	let cardState: CardState = $state('idle');
 	let currentStrategy = $state('');
 	let drawCount = $state(0);
+	let aboutOpen = $state(false);
 
 	function handleDraw() {
 		if (cardState === 'revealed') {
@@ -54,7 +56,8 @@
 	</footer>
 </main>
 
-<Dock onDraw={handleDraw} />
+<Dock onDraw={handleDraw} onAbout={() => (aboutOpen = true)} />
+<AboutDrawer open={aboutOpen} onClose={() => (aboutOpen = false)} />
 
 <style>
 	.app {
@@ -81,7 +84,7 @@
 
 	.title {
 		font-family: var(--font-sans);
-		font-size: 1.1rem;
+		font-size: 14px;
 		font-weight: 900;
 		letter-spacing: 0.25em;
 		text-transform: uppercase;
@@ -89,7 +92,7 @@
 	}
 
 	.subtitle {
-		font-size: 0.8rem;
+		font-size: 12px;
 		font-style: italic;
 		font-weight: 900;
 		color: var(--color-text-light);

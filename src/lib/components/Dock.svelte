@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { Motion, useMotionValue } from 'svelte-motion';
 	import DockItem from './DockItem.svelte';
-	import { Shuffle } from 'lucide-svelte';
+	import { Shuffle, BookOpen } from 'lucide-svelte';
 
 	export let onDraw: () => void = () => {};
+	export let onAbout: () => void = () => {};
 
 	const mouseX = useMotionValue(Infinity);
 	const containerX = useMotionValue(0);
@@ -28,6 +29,11 @@
 			<DockItem {mouseX} {containerX}>
 				<button class="dock-btn" on:click={onDraw} aria-label="Draw a strategy">
 					<Shuffle size={20} strokeWidth={1.5} />
+				</button>
+			</DockItem>
+			<DockItem {mouseX} {containerX}>
+				<button class="dock-btn" on:click={onAbout} aria-label="About Oblique Strategies">
+					<BookOpen size={20} strokeWidth={1.5} />
 				</button>
 			</DockItem>
 		</div>
