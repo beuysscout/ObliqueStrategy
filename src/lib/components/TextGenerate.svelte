@@ -39,7 +39,7 @@
 
   .word {
     display: inline-block;
-    background: linear-gradient(to right, #acacac, #363636, #acacac);
+    background: linear-gradient(90deg, rgba(172, 172, 172, 1) 0%, rgba(54, 54, 54, 1) 64%, rgba(172, 172, 172, 1) 100%);
     background-size: 200% auto;
     background-clip: text;
     -webkit-background-clip: text;

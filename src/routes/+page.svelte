@@ -3,39 +3,66 @@
 	import Dock from '$lib/components/Dock.svelte';
 	import Particles from '$lib/components/Particles.svelte';
 	import AboutDrawer from '$lib/components/AboutDrawer.svelte';
+	import AddStrategyDrawer, { type CustomStrategy } from '$lib/components/AddStrategyDrawer.svelte';
+	import DrawFilter, { type FilterMode } from '$lib/components/DrawFilter.svelte';
 	import { drawRandomStrategy } from '$lib/strategies';
+
+	const STORAGE_KEY = 'oblique-custom-strategies';
 
 	type CardState = 'idle' | 'revealed' | 'exiting';
 
 	let cardState: CardState = $state('idle');
 	let currentStrategy = $state('');
+	let currentAttribution: { author: string; year: string } | null = $state(null);
 	let drawCount = $state(0);
 	let aboutOpen = $state(false);
+	let addOpen = $state(false);
+	let filterMode: FilterMode = $state('all');
+	let customStrategies: CustomStrategy[] = $state(
+		JSON.parse(typeof localStorage !== 'undefined' ? (localStorage.getItem(STORAGE_KEY) ?? '[]') : '[]')
+	);
+
+	function handleCustomUpdate(updated: CustomStrategy[]) {
+		customStrategies = updated;
+		localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+	}
+
+	function applyDraw(exclude?: string) {
+		let drawn: string;
+		let match: CustomStrategy | undefined;
+
+		if (filterMode === 'original') {
+			drawn = drawRandomStrategy(exclude, []);
+			match = undefined;
+		} else if (filterMode === 'community') {
+			const pool = customStrategies.filter((s) => s.text !== exclude);
+			const item = pool.length > 0 ? pool[Math.floor(Math.random() * pool.length)] : customStrategies[0];
+			drawn = item.text;
+			match = item;
+		} else {
+			drawn = drawRandomStrategy(exclude, customStrategies.map((s) => s.text));
+			match = customStrategies.find((s) => s.text === drawn);
+		}
+
+		currentStrategy = drawn;
+		currentAttribution = match ? { author: match.author, year: match.year } : null;
+		drawCount++;
+	}
 
 	function handleDraw() {
 		if (cardState === 'revealed') {
 			cardState = 'exiting';
 			setTimeout(() => {
-				currentStrategy = drawRandomStrategy(currentStrategy);
-				drawCount++;
+				applyDraw(currentStrategy);
 				cardState = 'revealed';
 			}, 300);
 		} else {
-			currentStrategy = drawRandomStrategy();
-			drawCount++;
+			applyDraw();
 			cardState = 'revealed';
 		}
 	}
 
-	function handleKeydown(e: KeyboardEvent) {
-		if (e.code === 'Space' || e.code === 'Enter') {
-			e.preventDefault();
-			handleDraw();
-		}
-	}
 </script>
-
-<svelte:window onkeydown={handleKeydown} />
 
 <Particles />
 
@@ -46,7 +73,7 @@
 	</header>
 
 	<section class="stage">
-		<Card strategy={currentStrategy} state={cardState} />
+		<Card strategy={currentStrategy} state={cardState} attribution={currentAttribution} />
 	</section>
 
 	<footer class="footer" class:faded={cardState === 'revealed'}>
@@ -56,8 +83,15 @@
 	</footer>
 </main>
 
-<Dock onDraw={handleDraw} onAbout={() => (aboutOpen = true)} />
+<DrawFilter mode={filterMode} communityCount={customStrategies.length} onChange={(m) => (filterMode = m)} />
+<Dock onDraw={handleDraw} onAbout={() => (aboutOpen = true)} onAdd={() => (addOpen = true)} />
 <AboutDrawer open={aboutOpen} onClose={() => (aboutOpen = false)} />
+<AddStrategyDrawer
+	open={addOpen}
+	onClose={() => (addOpen = false)}
+	{customStrategies}
+	onUpdate={handleCustomUpdate}
+/>
 
 <style>
 	.app {

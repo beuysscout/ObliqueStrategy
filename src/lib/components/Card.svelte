@@ -5,10 +5,12 @@
 
 	let {
 		strategy = '',
-		state = 'idle' as CardState
+		state = 'idle' as CardState,
+		attribution = null as { author: string; year: string } | null
 	}: {
 		strategy: string;
 		state: CardState;
+		attribution?: { author: string; year: string } | null;
 	} = $props();
 </script>
 
@@ -18,6 +20,9 @@
 			<p class="strategy-text">
 				<TextGenerate text={strategy} duration={0.4} />
 			</p>
+			{#if attribution}
+				<p class="attribution">{attribution.author}, {attribution.year}</p>
+			{/if}
 		</div>
 	{:else if state === 'exiting'}
 		<div class="exiting" aria-hidden="true">
@@ -49,6 +54,15 @@
 		font-weight: 300;
 		max-width: 800px;
 		width: 90vw;
+	}
+
+	.attribution {
+		font-size: 8px;
+		text-align: center;
+		color: rgba(255, 255, 255, 0.35);
+		letter-spacing: 0.08em;
+		margin-top: 16px;
+		text-transform: uppercase;
 	}
 
 	.exiting-text {
