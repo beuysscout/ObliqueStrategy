@@ -1,7 +1,6 @@
 <script lang="ts">
 	import TextGenerate from './TextGenerate.svelte';
-
-	type CardState = 'idle' | 'revealed' | 'exiting';
+	import type { CardState } from '$lib/types';
 
 	let {
 		strategy = '',

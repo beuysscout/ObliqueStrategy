@@ -6,10 +6,9 @@
 	import AddStrategyDrawer, { type CustomStrategy } from '$lib/components/AddStrategyDrawer.svelte';
 	import DrawFilter, { type FilterMode } from '$lib/components/DrawFilter.svelte';
 	import { drawRandomStrategy } from '$lib/strategies';
+	import { DURATIONS, type CardState } from '$lib/types';
 
 	const STORAGE_KEY = 'oblique-custom-strategies';
-
-	type CardState = 'idle' | 'revealed' | 'exiting';
 
 	let cardState: CardState = $state('idle');
 	let currentStrategy = $state('');
@@ -55,14 +54,24 @@
 			setTimeout(() => {
 				applyDraw(currentStrategy);
 				cardState = 'revealed';
-			}, 300);
+			}, DURATIONS.exit);
 		} else {
 			applyDraw();
 			cardState = 'revealed';
 		}
 	}
 
+	function handleKeydown(e: KeyboardEvent) {
+		const target = e.target as HTMLElement;
+		if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) return;
+		if (e.code === 'Space' || e.code === 'Enter') {
+			e.preventDefault();
+			handleDraw();
+		}
+	}
 </script>
+
+<svelte:window onkeydown={handleKeydown} />
 
 <Particles />
 

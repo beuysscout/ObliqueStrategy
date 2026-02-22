@@ -17,7 +17,7 @@
 	let particles: Particle[] = [];
 
 	function createParticles(width: number, height: number) {
-		const count = Math.floor((width * height) / 25000);
+		const count = Math.min(Math.floor((width * height) / 25000), 200);
 		particles = Array.from({ length: count }, () => ({
 			x: Math.random() * width,
 			y: Math.random() * height,
@@ -61,6 +61,9 @@
 	}
 
 	onMount(() => {
+		const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		if (prefersReducedMotion) return;
+
 		ctx = canvas.getContext('2d');
 		resize();
 		animate();
