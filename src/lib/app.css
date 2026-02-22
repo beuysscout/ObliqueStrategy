@@ -33,6 +33,10 @@ body {
 body {
 	font-family: var(--font-sans);
 	background-color: var(--color-bg);
+	background-image:
+		radial-gradient(ellipse 80% 60% at -10% -5%, rgba(255, 255, 255, 0.07) 0%, transparent 65%),
+		radial-gradient(ellipse 50% 40% at 5% 10%, rgba(255, 255, 255, 0.04) 0%, transparent 55%),
+		linear-gradient(135deg, rgba(255, 255, 255, 0.025) 0%, transparent 60%);
 	color: var(--color-surface);
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
