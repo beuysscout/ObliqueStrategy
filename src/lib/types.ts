@@ -1,8 +1,6 @@
-export type CardState = 'idle' | 'drawing' | 'revealed' | 'exiting';
+export type CardState = 'idle' | 'revealed' | 'exiting';
 
 export const DURATIONS = {
 	/** Card exit animation before re-draw (ms) */
-	exit: 450,
-	/** Drawing/lift animation before reveal (ms) */
-	draw: 800
+	exit: 300
 } as const;

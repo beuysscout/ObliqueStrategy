@@ -124,7 +124,8 @@ export const strategies: string[] = [
 	'What to maintain? What to change?'
 ];
 
-export function drawRandomStrategy(exclude?: string): string {
-	const available = exclude ? strategies.filter((s) => s !== exclude) : strategies;
+export function drawRandomStrategy(exclude?: string, custom: string[] = []): string {
+	const pool = [...strategies, ...custom];
+	const available = exclude ? pool.filter((s) => s !== exclude) : pool;
 	return available[Math.floor(Math.random() * available.length)];
 }

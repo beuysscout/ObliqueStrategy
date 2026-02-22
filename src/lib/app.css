@@ -1,13 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Funnel+Sans:wght@300..800&display=swap');
 
 :root {
 	--color-bg: #0a0a0a;
 	--color-surface: #f5f0eb;
 	--color-surface-hover: #ebe5de;
-	--color-text: #1a1a1a;
-	--color-text-muted: #6b6560;
-	--color-text-light: #a09890;
+	--color-text: #ffffff;
+	--color-text-muted: #ffffff;
+	--color-text-light: #ffffff;
 	--color-accent: #d4c5b5;
+	--font-sans: 'Funnel Sans', sans-serif;
 	--font-serif: 'EB Garamond', 'Georgia', serif;
 	--font-mono: 'SF Mono', 'Fira Code', monospace;
 	--ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -30,8 +31,12 @@ body {
 }
 
 body {
-	font-family: var(--font-serif);
+	font-family: var(--font-sans);
 	background-color: var(--color-bg);
+	background-image:
+		radial-gradient(ellipse 80% 60% at -10% -5%, rgba(255, 255, 255, 0.07) 0%, transparent 65%),
+		radial-gradient(ellipse 50% 40% at 5% 10%, rgba(255, 255, 255, 0.04) 0%, transparent 55%),
+		linear-gradient(135deg, rgba(255, 255, 255, 0.025) 0%, transparent 60%);
 	color: var(--color-surface);
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
