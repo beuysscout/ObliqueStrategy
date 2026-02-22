@@ -1,5 +1,5 @@
 <script lang="ts">
-	type CardState = 'idle' | 'drawing' | 'revealed' | 'exiting';
+	import type { CardState } from '$lib/types';
 
 	let {
 		strategy = '',

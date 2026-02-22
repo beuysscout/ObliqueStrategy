@@ -2,12 +2,17 @@
 	import Card from '$lib/components/Card.svelte';
 	import Particles from '$lib/components/Particles.svelte';
 	import { drawRandomStrategy } from '$lib/strategies';
-
-	type CardState = 'idle' | 'drawing' | 'revealed' | 'exiting';
+	import { DURATIONS, type CardState } from '$lib/types';
 
 	let cardState: CardState = $state('idle');
 	let currentStrategy = $state('');
 	let drawCount = $state(0);
+
+	function revealAfterDraw() {
+		setTimeout(() => {
+			cardState = 'revealed';
+		}, DURATIONS.draw);
+	}
 
 	function handleDraw() {
 		if (cardState === 'drawing') return;
@@ -18,21 +23,19 @@
 				currentStrategy = drawRandomStrategy(currentStrategy);
 				drawCount++;
 				cardState = 'drawing';
-				setTimeout(() => {
-					cardState = 'revealed';
-				}, 800);
-			}, 450);
+				revealAfterDraw();
+			}, DURATIONS.exit);
 		} else {
 			currentStrategy = drawRandomStrategy();
 			drawCount++;
 			cardState = 'drawing';
-			setTimeout(() => {
-				cardState = 'revealed';
-			}, 800);
+			revealAfterDraw();
 		}
 	}
 
 	function handleKeydown(e: KeyboardEvent) {
+		const target = e.target as HTMLElement;
+		if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) return;
 		if (e.code === 'Space' || e.code === 'Enter') {
 			e.preventDefault();
 			handleDraw();
