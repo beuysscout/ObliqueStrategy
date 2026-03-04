@@ -10,7 +10,6 @@
 
 	let text = '';
 	let author = '';
-	let year = String(new Date().getFullYear());
 	let error = '';
 
 	function add() {
@@ -28,10 +27,9 @@
 			error = 'That one already exists.';
 			return;
 		}
-		onUpdate([...customStrategies, { text: trimmedText, author: trimmedAuthor, year }]);
+		onUpdate([...customStrategies, { text: trimmedText, author: trimmedAuthor, year: String(new Date().getFullYear()) }]);
 		text = '';
 		author = '';
-		year = String(new Date().getFullYear());
 		error = '';
 	}
 
@@ -66,22 +64,13 @@
 				bind:value={text}
 				on:keydown={handleKeydown}
 			/>
-			<div class="meta-row">
-				<input
-					class="input"
-					type="text"
-					placeholder="Your name"
-					bind:value={author}
-					on:keydown={handleKeydown}
-				/>
-				<input
-					class="input year-input"
-					type="text"
-					placeholder="Year"
-					bind:value={year}
-					on:keydown={handleKeydown}
-				/>
-			</div>
+			<input
+				class="input"
+				type="text"
+				placeholder="Your name"
+				bind:value={author}
+				on:keydown={handleKeydown}
+			/>
 			<button class="add-btn" on:click={add}>Add</button>
 		</div>
 
@@ -228,11 +217,6 @@
 		margin-top: 4px;
 	}
 
-	.meta-row {
-		display: flex;
-		gap: 8px;
-	}
-
 	.input {
 		width: 100%;
 		background: rgba(255, 255, 255, 0.05);
@@ -252,11 +236,6 @@
 
 	.input:focus {
 		border-color: rgba(255, 255, 255, 0.3);
-	}
-
-	.year-input {
-		width: 90px;
-		flex-shrink: 0;
 	}
 
 	.add-btn {
